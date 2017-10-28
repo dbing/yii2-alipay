@@ -1,5 +1,6 @@
 # yii2-alipay
-PC端即时到账支付宝付款接口
+
+Alipay PC terminal instant payment payment interface(PC端即时到账支付宝付款接口)
 
 Installation
 ------------
