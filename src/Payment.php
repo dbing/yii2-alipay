@@ -98,8 +98,12 @@ class Payment {
 
         //建立请求
         $alipaySubmit = new AlipaySubmit($this->bulidConfig());
-
-        return $alipaySubmit->buildRequestUrl($parameter);
+        $payUrl = $alipaySubmit->buildRequestUrl($parameter);
+        if(!empty($this->compose))
+        {
+            return str_replace('%HREF_VAL%', $payUrl, $this->compose);
+        }        
+        return $payUrl;
     }
 
     /**
