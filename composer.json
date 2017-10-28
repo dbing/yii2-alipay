@@ -16,7 +16,7 @@
     ],
     "minimum-stability": "dev",
     "autoload":{
-        "spr-4":{
+        "psr-4":{
             "bing\\alipay\\":"yii2-alipay/src"
         }
     }
