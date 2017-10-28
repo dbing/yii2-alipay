@@ -30,6 +30,7 @@ class AlipaySubmit {
 
     /**
      * 生成签名结果
+     *
      * @param $para_sort String 已排序要签名的数组
      * @return String 签名结果字符串
      */
@@ -51,6 +52,7 @@ class AlipaySubmit {
 
     /**
      * 生成要请求给支付宝的参数数组
+     *
      * @param $para_temp Array 请求前的参数数组
      * @return Array 要请求的参数数组
      */
@@ -73,6 +75,7 @@ class AlipaySubmit {
 
     /**
      * 生成要请求给支付宝的参数数组
+     *
      * @param $para_temp Array 请求前的参数数组
      * @return String 要请求的参数数组字符串
      */
@@ -88,6 +91,25 @@ class AlipaySubmit {
 
     /**
      * 建立请求，以表单HTML形式构造（默认）
+     *
+     * @param $para_temp Array 请求参数数组
+     * @return String 支付URL
+     */
+    function buildRequestUrl($para_temp)
+    {
+        $url = $this->alipay_gateway_new . "_input_charset=" . trim(strtolower($this->alipay_config['input_charset']));
+        //待请求参数数组
+        $para = $this->buildRequestPara($para_temp);
+        while (list ($key, $val) = each($para))
+        {
+            $url .= '&' . $key .'=' .$val;
+        }
+        return $url;
+    }
+
+    /**
+     * 建立请求，以表单HTML形式构造（源SDK方法暂时保留未使用到）
+     *
      * @param $para_temp Array 请求参数数组
      * @param $method String 提交方式。两个值可选：post、get
      * @param $button_name String 确认按钮显示文字
@@ -103,14 +125,13 @@ class AlipaySubmit {
 
         //submit按钮控件请不要含有name属性
         $sHtml = $sHtml . "<input type='submit' class='btn_u' value='" . $button_name . "'></form>";
-
-        //$sHtml = $sHtml . "<script>document.forms['alipaysubmit'].submit();</script>";
-
+        $sHtml = $sHtml . "<script>document.forms['alipaysubmit'].submit();</script>";
         return $sHtml;
     }
 
     /**
      * 建立请求，以模拟远程HTTP的POST请求方式构造并获取支付宝的处理结果
+     *
      * @param $para_temp Array 请求参数数组
      * @return String 支付宝处理结果
      */
@@ -128,6 +149,7 @@ class AlipaySubmit {
 
     /**
      * 建立请求，以模拟远程HTTP的POST请求方式构造并获取支付宝的处理结果，带文件上传功能
+     *
      * @param $para_temp Array 请求参数数组
      * @param $file_para_name String 文件类型的参数名
      * @param $file_name String 文件完整绝对路径

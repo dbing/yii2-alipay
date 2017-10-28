@@ -3,28 +3,15 @@
 
 namespace bing\alipay;
 
-class Alipay {
+class Payment {
 
-    //↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
     /**
-     * @var String 合作身份者id，以2088开头的16位纯数字
+     * @var String 支付类型 ，默认1:商品购买(目前仅支持此类型)
      */
-    public $partner = '2088121321528708';
+    const PAYMENT_TYPE = 1;
 
     /**
-     * @var String 收款支付宝账号
-     */
-    public $seller_email = 'itbing@sina.cn';
-
-    /**
-     * @var String 安全检验码，以数字和字母组成的32位字符
-     */
-    public $key = '1cvr0ix35iyy7qbkgs3gwymeiqlgromm';
-
-    //↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-
-    /**
-     * @var String 签名方式 不需修改
+     * @var String 签名方式 不需修改(目前支持)
      */
     public $sign_type = 'MD5';
 
@@ -44,39 +31,48 @@ class Alipay {
      */
     public $transport = 'http';
 
-    /**
-     * @var String 服务器异步通知页面路径
-     * 需http://格式的完整路径，不能加?id=123这类自定义参数
-     */
-    public $notify_url = 'http://bingphp.com/notify.php';
-
-    /**
-     * @var String 页面跳转同步通知页面路径
-     * 需http://格式的完整路径，不能加?id=123这类自定义参数，不能写成http://localhost/
-     */
-    public $return_url = 'http://yii.shop.com/index.php?r=order/return';
 
     public $extra_common_param = '';
 
     /**
-     * @name requestPay
-     * @desc
-     * @param $out_trade_no String 商户订单号，商户网站订单系统中唯一订单号，必填
-     * @param $subject String 订单名称
-     * @param $total_fee String 付款金额
-     * @param $body String 订单描述
-     * @param $common_param 自定义参数
-     * @param $show_url String 商品展示地址
-     * @return String 跳转HTML
+     * @var String 用于生产带有支付URL的a标签
      */
-    public function requestPay($out_trade_no, $subject, $total_fee, $body, $common_param='', $show_url='') {
-        /*         * ************************请求参数************************* */
+    public $compose;
+
+    /**
+     * 组装A标签
+     *
+     * @param string $link_name 标签名
+     * @param string $class     类名
+     * @param string $target    打开方式
+     * @return $this
+     */
+    public function compose($link_name='去支付',$class='',$target='_blank')
+    {
+        $this->compose = '<a href="%HREF_VAL%" class="'.$class.'" target="'.$target.'">' . $link_name .'</a>';
+        return $this;
+    }
+
+    /**
+     * @name payForm
+     *
+     * @param $out_trade_no String  商户订单号，商户网站订单系统中唯一订单号，必填
+     * @param $subject String       订单名称
+     * @param $total_fee String     付款金额
+     * @param $body String          订单描述
+     * @param $common_param         自定义参数
+     * @param $show_url String      商品展示地址
+     * @return String 支付表单
+     */
+    public function payUrl($out_trade_no, $subject, $total_fee, $body, $common_param='', $show_url='') {
+
         //支付类型
-        $payment_type = "1";
-        //必填，不能修改
+        $payment_type = self::PAYMENT_TYPE;
+
         //防钓鱼时间戳
         $anti_phishing_key = "";
         //若要使用请调用类文件submit中的query_timestamp函数
+
         //客户端的IP地址
         $exter_invoke_ip = "";
         //非局域网的外网IP地址，如：221.0.0.1
@@ -102,14 +98,18 @@ class Alipay {
 
         //建立请求
         $alipaySubmit = new AlipaySubmit($this->bulidConfig());
-        $html_text = $alipaySubmit->buildRequestForm($parameter, "get", "去支付");
-        return $html_text;
+
+        return $alipaySubmit->buildRequestUrl($parameter);
     }
 
+    /**
+     * 验证异步签名
+     *
+     * @return bool
+     */
     public function verifyNotify() {
         $alipayNotify = new AlipayNotify($this->bulidConfig());
         $verify_result = $alipayNotify->verifyNotify();
-
         return $verify_result;
     }
 
@@ -121,7 +121,6 @@ class Alipay {
     public function verifyReturn() {
         $alipayNotify = new AlipayNotify($this->bulidConfig());
         $verify_result = $alipayNotify->verifyReturn();
-        
         return $verify_result;
     }
 
