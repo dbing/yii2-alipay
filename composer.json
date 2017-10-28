@@ -1,0 +1,24 @@
+{
+    "name": "dbing/yii2-alipay",
+    "description": "Yii2 framework alipay",
+    "type": "library",
+    "require": {
+        "yiisoft/yii2": "^2.0"
+    },
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "BING",
+            "email": "itbing@sina.cn",
+            "homepage": "http://www.bingphp.com",
+            "role": "Developer"            
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload":{
+        "spr-4":{
+            "bing\\alipay\\":"yii2-alipay/src"
+        }
+    }
+
+}
