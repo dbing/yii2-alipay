@@ -60,17 +60,21 @@ $payUrl = Yii::$app->alipay
 通知地址处理:
 ```php
 // 验签
-$result = Yii::$app->alipay->verifyReturn();
-if($result)
+if(Yii::$app->alipay->verifyReturn())
 {
     $get = Yii::$app->request->get();
-    ...
-    // 系统业务
-    ...
-    ...
-    
+    if($get['trade_status'] == 'TRADE_SUCCESS' || $get['trade_status'] == 'TRADE_FINISHED')
+    {
+        //判断该笔订单是否在商户网站中已经做过处理
+        //否，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
+        //是，不执行商户的业务程序
+        ...
+        ...
+        ...
+    }
 }
 ```
+
 异步地址处理:
 ```php
 // 验签
@@ -78,10 +82,15 @@ $result = Yii::$app->alipay->verifyNotify();
 if($result)
 {
     $post = Yii::$app->request->post();
-    ...
-    // 系统业务
-    ...
-    ...    
+    if($post['trade_status'] == 'TRADE_SUCCESS' || $post['trade_status'] == 'TRADE_FINISHED')
+    {
+        //判断该笔订单是否在商户网站中已经做过处理
+        //否，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
+        //是，不执行商户的业务程序
+        ...
+        ...
+        ...
+    }      
 }
 ```
 ---
