@@ -1,30 +1,28 @@
 # yii2-alipay
 
-Alipay PC terminal instant payment payment interface(PC端即时到账支付宝付款接口)
+PC端即时到账支付宝付款接口
 
-Installation
+安装
 ------------
+安装此扩展的首选方法是通过  [composer](http://getcomposer.org/download/).
 
-The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
-
-Either run
+运行
 
 ```
 php composer.phar require --prefer-dist dbing/yii2-alipay
 ```
 
-or add
+或者 添加
 
 ```json
 "dbing/yii2-alipay": "~1.0.0"
 ```
 
-to the require section of your composer.json.
+composer.json.
 
-Usage
+使用
 -----
-
-To use this extension,  simply add the following code in your application configuration:
+要使用此扩展，只需在应用程序配置中添加以下代码:
 
 ```php
 return [
@@ -44,14 +42,14 @@ return [
 
 ```
 
-You can get pay url link:
+获取单纯的支付链接:
 
 ```php
 $payUrl = Yii::$app->alipay->payUrl(time() . rand(10000,99999),'必应商城订单',0.01,'买了一个栗子');
 ```
 
 
-You can also pay a link:
+你也可以获取带有支付链接的A标签:
 
 ```php
 $payUrl = Yii::$app->alipay
@@ -59,6 +57,31 @@ $payUrl = Yii::$app->alipay
     ->payUrl(time() . 99999,'必应商城订单',0.01,'买了一头猪');
 ```
 
----
+通知地址处理:
+```php
+// 验签
+$result = Yii::$app->alipay->verifyReturn();
+if($result)
+{
+    $get = Yii::$app->request->get();
+    ...
+    // 系统业务
+    ...
+    ...
+    
+}
+```
+异步地址处理:
+```php
+// 验签
+$result = Yii::$app->alipay->verifyNotify();
+if($result)
+{
+    $post = Yii::$app->request->post();
+    ...
+    // 系统业务
+    ...
+    ...    
+}
 
- 
+---
