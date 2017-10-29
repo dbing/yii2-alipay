@@ -29,12 +29,12 @@ return [
     //....
     'components' => [
         'alipay' =>[
-            'class'         =>'bing\alipay\Alipay',
+            'class'         =>'bing\alipay\Payment',
             'partner'       =>'208812xxxxxxxxxx',                           //合作身份者id
             'seller_email'  =>'itbing@sina.cn',                             //收款支付宝账号
             'key'           =>'1cvr0ix35iyy7qbkgs3gwyxxxxxxxxxx',           //安全检验码，
-            'return_url'    =>'http://www.test.com/index.php/order/return', //同步通知地址（注意：不能加?id=123这类自定义参数）
-            'notify_url'    =>'http://www.test.com/index.php/order/notify', //异步通知地址（注意：同上且不能写成内网域如localhost）
+            'return_url'    =>'http://www.test.com/pay/return', //同步通知地址（注意：不能加?id=123这类自定义参数）
+            'notify_url'    =>'http://www.test.com/pay/notify', //异步通知地址（注意：同上且不能写成内网域如localhost）
 
         ]
     ],
@@ -95,9 +95,6 @@ if($result)
     }
     else if($post['trade_status'] == 'TRADE_SUCCESS')
     {
-        //判断该笔订单是否在商户网站中已经做过处理
-        //否，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
-        //是，不执行商户的业务程序
         ...
         ...
         ...        
