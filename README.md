@@ -61,7 +61,4 @@ $payUrl = Yii::$app->alipay
 
 ---
 
- * @homepage http://bingphp.com
- * @author bing <itbing@sina.cn>
- * @since 1.0
  

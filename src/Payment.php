@@ -1,5 +1,12 @@
 <?php
-
+/* *
+ * 支付宝接
+ * 详细：该类是获取支付链接、同步通知和异步通知验证类
+ * 版本：3.3
+ * 日期：2012-07-19
+ * 说明：该代码仅供学习和研究支付宝接口使用，只是提供一个参考。
+ *
+ */
 
 namespace bing\alipay;
 
@@ -102,7 +109,7 @@ class Payment {
         if(!empty($this->compose))
         {
             return str_replace('%HREF_VAL%', $payUrl, $this->compose);
-        }        
+        }
         return $payUrl;
     }
 
@@ -112,7 +119,7 @@ class Payment {
      * @return bool
      */
     public function verifyNotify() {
-        $alipayNotify = new AlipayNotify($this->bulidConfig());
+        $alipayNotify = new AlipayVerify($this->bulidConfig());
         $verify_result = $alipayNotify->verifyNotify();
         return $verify_result;
     }
@@ -123,7 +130,7 @@ class Payment {
      * @return bool
      */
     public function verifyReturn() {
-        $alipayNotify = new AlipayNotify($this->bulidConfig());
+        $alipayNotify = new AlipayVerify($this->bulidConfig());
         $verify_result = $alipayNotify->verifyReturn();
         return $verify_result;
     }

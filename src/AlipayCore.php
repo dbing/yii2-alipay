@@ -4,9 +4,8 @@
  * 详细：该类是请求、通知返回两个文件所调用的公用函数核心处理文件
  * 版本：3.3
  * 日期：2012-07-19
- * 说明：
- * 以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
- * 该代码仅供学习和研究支付宝接口使用，只是提供一个参考。
+ * 说明：该代码仅供学习和研究支付宝接口使用，只是提供一个参考。
+ *
  */
 
 namespace bing\alipay;
@@ -15,6 +14,7 @@ class AlipayCore {
 
     /**
      * 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
+     *
      * @param $para Array 需要拼接的数组
      * @return String 拼接完成以后的字符串
      */
@@ -34,6 +34,7 @@ class AlipayCore {
 
     /**
      * 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串，并对字符串做urlencode编码
+     *
      * @param $para Array 需要拼接的数组
      * @return String 拼接完成以后的字符串
      */
@@ -53,6 +54,7 @@ class AlipayCore {
 
     /**
      * 除去数组中的空值和签名参数
+     *
      * @param $para Array 签名参数组
      * @return Array 去掉空值与签名参数后的新签名参数组
      */
@@ -67,6 +69,7 @@ class AlipayCore {
 
     /**
      * 对数组排序
+     *
      * @param $para Array 排序前的数组
      * @return Array 排序后的数组
      */
@@ -147,6 +150,7 @@ class AlipayCore {
 
     /**
      * 实现多种字符编码方式
+     *
      * @param $input String 需要编码的字符串
      * @param $_output_charset String 输出的编码格式
      * @param $_input_charset String 输入的编码格式
@@ -167,6 +171,7 @@ class AlipayCore {
 
     /**
      * 实现多种字符解码方式
+     *
      * @param $input String 需要解码的字符串
      * @param $_output_charset String 输出的解码格式
      * @param $_input_charset String 输入的解码格式
