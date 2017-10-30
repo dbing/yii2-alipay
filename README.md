@@ -57,7 +57,7 @@ $payUrl = Yii::$app->alipay
     ->payUrl(time() . 99999,'必应商城订单',0.01,'买了一头猪');
 ```
 
-通知地址处理:
+同步地址处理:
 ```php
 // 验签
 if(Yii::$app->alipay->verifyReturn())
