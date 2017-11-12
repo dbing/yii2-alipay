@@ -67,7 +67,7 @@ class AlipayVerify {
      * @return Boolean 验证结果
      */
 	function verifyReturn(){
-		if(empty($_GET)) {//判断POST来的数组是否为空
+		if(empty($_GET)) {//判断GET来的数组是否为空
 			return false;
 		}
 		else {

@@ -85,7 +85,7 @@ class AlipaySubmit {
     }
 
     /**
-     * 建立请求，以表单HTML形式构造（默认）
+     * 构造支付URL（默认）
      *
      * @param $para_temp Array 请求参数数组
      * @return String 支付URL
@@ -122,6 +122,24 @@ class AlipaySubmit {
         $sHtml = $sHtml . "<input type='submit' class='btn_u' value='" . $button_name . "'></form>";
         $sHtml = $sHtml . "<script>document.forms['alipaysubmit'].submit();</script>";
         return $sHtml;
+    }
+
+    /**
+     * 构造退款URL（默认）
+     *
+     * @param $para_temp Array 请求参数数组
+     * @return String 支付URL
+     */
+    function buildRefundUrl($para_temp)
+    {
+        $url = $this->alipay_gateway_new . "_input_charset=" . trim(strtolower($this->alipay_config['input_charset']));
+        //待请求参数数组
+        $para = $this->buildRequestPara($para_temp);
+        while (list ($key, $val) = each($para))
+        {
+            $url .= '&' . $key .'=' .$val;
+        }
+        return $url;
     }
 
     /**

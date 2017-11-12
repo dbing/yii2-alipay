@@ -61,7 +61,7 @@ class Payment {
     }
 
     /**
-     * @name payForm
+     * 获取支付链接 
      *
      * @param $out_trade_no String  商户订单号，商户网站订单系统中唯一订单号，必填
      * @param $subject String       订单名称
@@ -114,6 +114,35 @@ class Payment {
     }
 
     /**
+     * 生成退款链接
+     *
+     * @param string $batch_no      批次号序列号[3至24位]
+     * @param string $batch_num     退款笔数
+     * @param string $detail_data   退款详细数据
+     * @return string 生成退款URL 
+     */
+    public function refund($batch_no,$batch_num,$detail_data)
+    {
+        //构造要请求的参数数组，无需改动
+        $parameter = array(
+            "service"       => "refund_fastpay_by_platform_pwd",
+            "partner"       => trim($this->['partner']),
+            "notify_url"    => $this->refund_url,
+            "seller_email"  => trim($this->seller_email),
+            "refund_date"   => date('Y-m-d H:i:s'),
+            "batch_no"      => date('Y-m-d').$batch_no,
+            "batch_num"     => $batch_num,
+            "detail_data"   => $detail_data,
+            "_input_charset"=> trim(strtolower($this->input_charset))
+        );
+
+        //建立请求
+        $alipaySubmit = new AlipaySubmit($this->bulidConfig());
+        $alipaySubmit->buildRefundUrl($parameter);
+
+    }
+
+    /**
      * 验证异步签名
      *
      * @return bool
@@ -134,6 +163,18 @@ class Payment {
         $verify_result = $alipayNotify->verifyReturn();
         return $verify_result;
     }
+
+    /**
+     * 验证退款签名
+     *
+     * @return bool
+     */
+    public function refundNotify() {
+        $alipayNotify = new AlipayVerify($this->bulidConfig());
+        $refund_result = $alipayNotify->verifyNotify();
+        return $refund_result;
+    }
+
 
     private function bulidConfig() {
         //构造要请求的配置数组

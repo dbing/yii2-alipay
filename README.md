@@ -21,7 +21,7 @@ php composer.phar require --prefer-dist dbing/yii2-alipay
 composer.json.
 
 使用
------
+------------
 要使用此扩展，只需在应用程序配置中添加以下代码:
 
 ```php
@@ -33,8 +33,9 @@ return [
             'partner'       =>'208812xxxxxxxxxx',                           //合作身份者id
             'seller_email'  =>'itbing@sina.cn',                             //收款支付宝账号
             'key'           =>'1cvr0ix35iyy7qbkgs3gwyxxxxxxxxxx',           //安全检验码，
-            'return_url'    =>'http://www.test.com/pay/return', //同步通知地址（注意：不能加?id=123这类自定义参数）
-            'notify_url'    =>'http://www.test.com/pay/notify', //异步通知地址（注意：同上且不能写成内网域如localhost）
+            'return_url'    =>'http://www.demo.com/pay/return', //同步通知地址（注意：不能加?id=123这类自定义参数）
+            'notify_url'    =>'http://www.demo.com/pay/notify', //异步通知地址（注意：同上且不能写成内网域如localhost）
+            'refund_url'    =>'http://www.demo.com/pay/refund', //退款通知地址（注意：同上且不能写成内网域如localhost）
 
         ]
     ],
@@ -45,6 +46,8 @@ return [
 获取单纯的支付链接:
 
 ```php
+$payUrl = Yii::$app->alipay->payUrl(唯一订单号,订单名称,付款金额,订单描述,[自定义参数],[商品展示地址]);
+eg:
 $payUrl = Yii::$app->alipay->payUrl(time() . rand(10000,99999),'必应商城订单',0.01,'买了一个栗子');
 ```
 
@@ -110,4 +113,55 @@ else
     echo "fail";
 }
 ```
+
+退款
+------------
+生成退款链接:
+
+```php
+$refundUrl = Yii::$app->alipay->refund(批次号序列号[3至24位],退款笔数,退款详细数据);
+eg:
+$refundUrl = Yii::$app->alipay->refund(0000001,1,'2017111221001104770549058379^0.01^协商退款');
+```
+
+退款异步通知处理:
+```php
+// 验签
+$result = Yii::$app->alipay->refundNotify();
+if($result){
+
+    //——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
+    
+    //批次号
+    $batch_no = $_POST['batch_no'];
+
+    //批量退款数据中转账成功的笔数
+    $success_num = $_POST['success_num'];
+
+    //批量退款数据中的详细信息
+    $result_details = $_POST['result_details'];
+
+
+    //判断是否在商户网站中已经做过了这次通知返回的处理
+        //如果没有做过处理，那么执行商户的业务程序
+        //如果有做过处理，那么不执行商户的业务程序
+        
+    echo "success";     //请不要修改或删除
+
+    //调试用，写文本函数记录程序运行情况是否正常
+    //logResult("这里写入想要调试的代码变量值，或其他运行的结果记录");
+
+    //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
+    
+}
+else {
+    //验证失败
+    echo "fail";
+
+    //调试用，写文本函数记录程序运行情况是否正常
+    //logResult("这里写入想要调试的代码变量值，或其他运行的结果记录");
+}
+
+```
+
 ---
