@@ -126,11 +126,11 @@ class Payment {
         //构造要请求的参数数组，无需改动
         $parameter = array(
             "service"       => "refund_fastpay_by_platform_pwd",
-            "partner"       => trim($this->['partner']),
+            "partner"       => trim($this->partner),
             "notify_url"    => $this->refund_url,
             "seller_email"  => trim($this->seller_email),
             "refund_date"   => date('Y-m-d H:i:s'),
-            "batch_no"      => date('Y-m-d').$batch_no,
+            "batch_no"      => date('Ymd').$batch_no,
             "batch_num"     => $batch_num,
             "detail_data"   => $detail_data,
             "_input_charset"=> trim(strtolower($this->input_charset))
@@ -138,7 +138,13 @@ class Payment {
 
         //建立请求
         $alipaySubmit = new AlipaySubmit($this->bulidConfig());
-        $alipaySubmit->buildRefundUrl($parameter);
+
+        $refundUrl = $alipaySubmit->buildRefundUrl($parameter);
+        if(!empty($this->compose))
+        {
+            return str_replace('%HREF_VAL%', $refundUrl, $this->compose);
+        }
+        return $refundUrl;
 
     }
 
