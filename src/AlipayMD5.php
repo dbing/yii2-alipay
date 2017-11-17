@@ -9,7 +9,7 @@
  */
 
 namespace bing\alipay;
-class AlipayMD5 {
+class AlipayMd5 {
 
     /**
      * 签名字符串
